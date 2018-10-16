@@ -2,28 +2,29 @@
 include_once 'FileSeekableIterator.php';
 include_once 'LogSeekableIterator.php';
 
-//$fileName = 'test.log';
-//
-//try {
-//
-//    $fileIterator = new FileSeekableIterator($fileName);
-//
-//    echo $fileIterator->current() . "<br/>";
-//    $fileIterator->next();
-//    echo $fileIterator->current(), "<br/>";
-//    echo $fileIterator->key(), "<br/>";
-//    $fileIterator->seek(100);
-//    echo $fileIterator->current() . "<br/>";
-//    echo var_export($fileIterator->valid(), true) . "<br/>";
-//    $fileIterator->rewind();
-//    echo $fileIterator->current() . "<br/>";
-//} catch (ErrorException $e) {
-//    echo $e->getMessage();
-//}
-//
-//echo "<br/><br/><br/>";
+$fileName = 'test.log';
+echo 'FileSeekableIterator:<br/>';
+try {
+
+    $fileIterator = new FileSeekableIterator($fileName);
+
+    echo $fileIterator->current() . "<br/>";
+    $fileIterator->next();
+    echo $fileIterator->current(), "<br/>";
+    echo $fileIterator->key(), "<br/>";
+    $fileIterator->seek(100);
+    echo $fileIterator->current() . "<br/>";
+    echo var_export($fileIterator->valid(), true) . "<br/>";
+    $fileIterator->rewind();
+    echo $fileIterator->current() . "<br/>";
+} catch (ErrorException $e) {
+    echo $e->getMessage();
+}
+
+echo "<br/><br/><br/>";
 
 $logName = 'log.log';
+echo '<br/>LogSeekableIterator:<br/>';
 try {
 
     $logIterator = new LogSeekableIterator($logName);
