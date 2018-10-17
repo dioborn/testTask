@@ -27,6 +27,13 @@ class LogSeekableIterator implements SeekableIterator
         $this->valSeparator = $valSeparator;
     }
 
+    public function __destruct()
+    {
+        if (is_resource($this->handle)) {
+            fclose($this->handle);
+        }
+    }
+
     /**
      * Seeks to a position
      * @param int $position
@@ -101,7 +108,7 @@ class LogSeekableIterator implements SeekableIterator
     private function getNextMapPoint()
     {
         // Указатель на конец последней найденной записи + разделитель
-        if(count($this->map)) {
+        if (count($this->map)) {
             $lastPoint = $this->map[count($this->map) - 1];
             $start = $lastPoint[0] + $lastPoint[1] + 2;
         } else {

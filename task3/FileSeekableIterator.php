@@ -21,6 +21,13 @@ class FileSeekableIterator implements SeekableIterator
         $this->handle = $handle;
     }
 
+    public function __destruct()
+    {
+        if (is_resource($this->handle)) {
+            fclose($this->handle);
+        }
+    }
+
     /**
      * Seeks to a position
      * @param int $position
