@@ -8,15 +8,23 @@ try {
 
     $fileIterator = new FileSeekableIterator($fileName);
 
+    $fileIterator->seek(1);
+    echo $fileIterator->current(), "<br/>";
+    echo var_export($fileIterator->valid(), true) . "<br/>";
     echo $fileIterator->current() . "<br/>";
     $fileIterator->next();
     echo $fileIterator->current(), "<br/>";
     echo $fileIterator->key(), "<br/>";
     $fileIterator->seek(100);
     echo $fileIterator->current() . "<br/>";
+    $fileIterator->seek(-100);
+    echo $fileIterator->current() . "<br/>";
     echo var_export($fileIterator->valid(), true) . "<br/>";
     $fileIterator->rewind();
     echo $fileIterator->current() . "<br/>";
+    $fileIterator->seek('1.4');
+    echo $fileIterator->current(), "<br/>";
+//    $fileIterator->seek('lul');
 } catch (ErrorException $e) {
     echo $e->getMessage();
 }
@@ -38,6 +46,7 @@ try {
     echo var_export($logIterator->valid(), true) . "<br/>";
     $logIterator->rewind();
     echo var_export($logIterator->current()) . "<br/>";
+    $logIterator->saveMap('map.txt') . "<br/>";
 } catch (ErrorException $e) {
     echo $e->getMessage();
 }

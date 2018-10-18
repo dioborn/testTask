@@ -36,7 +36,13 @@ class FileSeekableIterator implements SeekableIterator
      */
     public function seek($position)
     {
-        $this->position = $position;
+        if(!is_numeric($position)) {
+            trigger_error(get_class()  . '::seek() parameter must be integer, ' . gettype($position) . ' given!', E_USER_ERROR);
+            return;
+        } else if(!is_int($position)) {
+            trigger_error(get_class() . '::seek() parameter must be integer, ' . gettype($position) . ' given!', E_USER_NOTICE);
+        }
+        $this->position = (int)$position;
     }
 
     /**
@@ -45,7 +51,10 @@ class FileSeekableIterator implements SeekableIterator
      */
     public function current()
     {
-        fseek($this->handle, $this->position);  // fgetc move pointer
+        if($this->position < 0) {
+            return false;
+        }
+        fseek($this->handle, $this->position);
         return fgetc($this->handle);
     }
 

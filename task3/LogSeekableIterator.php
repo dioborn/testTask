@@ -42,7 +42,13 @@ class LogSeekableIterator implements SeekableIterator
      */
     public function seek($position)
     {
-        $this->position = $position;
+        if(!is_numeric($position)) {
+            trigger_error(get_class()  . '::seek() parameter must be integer, ' . gettype($position) . ' given!', E_USER_ERROR);
+            return;
+        } else if(!is_int($position)) {
+            trigger_error(get_class() . '::seek() parameter must be integer, ' . gettype($position) . ' given!', E_USER_NOTICE);
+        }
+        $this->position = (int)$position;
     }
 
     /**
@@ -51,6 +57,10 @@ class LogSeekableIterator implements SeekableIterator
      */
     public function current()
     {
+
+        if ($this->position < 0) {
+            return false;
+        }
 
         while (!$this->eof                                  // Пока не достигнут конец файла
         && !isset($this->map[$this->position])) {           // Указатель на начало запрашиваемой записи уже имеется
