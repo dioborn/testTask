@@ -2,7 +2,7 @@
 $dbName = 'test';
 $username = 'root';
 $pass = '';
-$chunk = 100000;
+$limit = 100000;
 
 date_default_timezone_set('UTC');
 error_reporting(E_ALL);
@@ -15,16 +15,18 @@ $start = microtime(true);
 $db = new PDO('mysql:host=localhost;dbname=' . $dbName, $username, $pass);
 
 $result = array();
-$recordNum = 0;       // Records counter
+$recordsCount = 0;
+$lastId = 0;
 do {
-    $sth = $db->prepare("select email from users order by id asc limit " . $recordNum . ", " . $chunk);
+    $sth = $db->prepare("select id, email from users where id > " . $lastId . " order by id asc limit " . $limit);
     $sth->execute();
     $i = 0;
 
     while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
 
-        $recordNum++;
         $i++;
+        $recordsCount++;
+        $lastId = $row['id'];
 
         // Field is empty
         if (!$row['email']) {
@@ -53,12 +55,12 @@ do {
         }
     }
 
-} while ($i == $chunk);
+} while ($i == $limit);
 
 
 $end = microtime(true);
 
-echo "\nDone!\nScript execution time: " . ($end - $start) . " seconds.\nRecords processed: " . $recordNum . "\n";
+echo "\nDone!\nScript execution time: " . ($end - $start) . " seconds.\nRecords processed: " . $recordsCount . "\n";
 
 // Save result
 var_dump($result);
